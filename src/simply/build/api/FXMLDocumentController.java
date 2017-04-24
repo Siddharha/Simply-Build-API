@@ -44,9 +44,9 @@ TextArea teResponse;
     }    
 
     private void loadMethodsForChoiceList() {
-        chMethods.setValue("POST");
+        chMethods.setValue("GET");
         chMethods.setItems(FXCollections.observableArrayList(
-    "POST", "GET"));
+    "GET", "POST"));
     }
 
     private void onActionCreate() {
