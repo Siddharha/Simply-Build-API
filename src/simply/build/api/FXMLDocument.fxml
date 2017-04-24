@@ -21,7 +21,7 @@
          </font>
       </Text>
       <Separator layoutX="270.0" layoutY="327.0" prefWidth="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="327.0" />
-      <TextField fx:id="tfPayload" alignment="TOP_LEFT" layoutX="14.0" layoutY="142.0" prefHeight="142.0" prefWidth="796.0" promptText="Enter Payload" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="142.0" />
+      <TextField fx:id="tfPayload" alignment="TOP_LEFT" disable="true" layoutX="14.0" layoutY="142.0" prefHeight="142.0" prefWidth="796.0" promptText="Enter Payload" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="142.0" />
       <Text fill="#ababab" layoutX="15.0" layoutY="301.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ex. {&quot;data&quot;:{&quot;name&quot;:&quot;Siddhartha&quot;}}" AnchorPane.leftAnchor="10.0" />
       <TextArea fx:id="teResponse" layoutX="10.0" layoutY="330.0" prefHeight="255.0" prefWidth="796.0" />
    </children>
