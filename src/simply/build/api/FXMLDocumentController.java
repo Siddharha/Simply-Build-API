@@ -6,6 +6,7 @@
 package simply.build.api;
 
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -52,11 +53,11 @@ TextArea teResponse;
     private void onActionCreate() {
         chMethods.getSelectionModel().selectedIndexProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
             if(newValue.intValue() ==1){
-                tfPayload.setDisable(true);
+                tfPayload.setDisable(false);
                 //System.out.println("Hi");
             }else{
                 // tfPayload.setEditable(true);
-                tfPayload.setDisable(false);
+                tfPayload.setDisable(true);
             }
         });
     }
@@ -81,8 +82,18 @@ TextArea teResponse;
             //add request header
             con.setRequestProperty("User-Agent", USER_AGENT);
             
+            	con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
+
+		String urlParameters = tfPayload.getText();
+
+		// Send post request
+		con.setDoOutput(true);
+        try (DataOutputStream wr = new DataOutputStream(con.getOutputStream())) {
+            wr.writeBytes(urlParameters);
+            wr.flush();
+        }
             int responseCode = con.getResponseCode();
-            System.out.println("\nSending 'GET' request to URL : " + url);
+            System.out.println("\nSending "+chMethods.getValue()+" request to URL : " + url);
             System.out.println("Response Code : " + responseCode);
             
             StringBuffer response;
