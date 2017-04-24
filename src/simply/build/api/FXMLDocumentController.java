@@ -83,8 +83,13 @@ TextArea teResponse;
             con.setRequestProperty("User-Agent", USER_AGENT);
             
             	con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
-
-		String urlParameters = tfPayload.getText();
+        String urlParameters = "";
+                if(!tfPayload.isDisable()){
+                    urlParameters = tfPayload.getText();
+                }else{
+                    urlParameters = "";
+                }
+		
 
 		// Send post request
 		con.setDoOutput(true);
