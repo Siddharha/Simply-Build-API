@@ -19,8 +19,10 @@ import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 
 /**
  *
@@ -36,6 +38,11 @@ TextField tfPayload,tfUrl;
 
 @FXML
 TextArea teResponse;
+@FXML
+ProgressBar pbLoading;
+
+@FXML
+Text txtResCode;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -64,13 +71,14 @@ TextArea teResponse;
     
     @FXML
     private void btnSend(Event e) throws MalformedURLException, IOException {
- 
+           pbLoading.setProgress(ProgressBar.INDETERMINATE_PROGRESS);
             callGetRequest();
-            
+           
            
     }
 
     private void callGetRequest() throws MalformedURLException, IOException {
+         
        String url = tfUrl.getText();
             
             URL obj = new URL(url);
@@ -84,6 +92,7 @@ TextArea teResponse;
             
             	con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
                 String urlParameters;
+                pbLoading.setProgress(0);
                 if(!tfPayload.isDisable()){
                     urlParameters = tfPayload.getText();
                 }else{
@@ -110,8 +119,9 @@ TextArea teResponse;
                     response.append(inputLine);
                 }
             }
-            
+            txtResCode.setText("Response Code : " + responseCode);
          teResponse.setText(response.toString());
+         // 
     }
     
 }
