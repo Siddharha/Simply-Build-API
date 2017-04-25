@@ -13,11 +13,16 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextArea;
@@ -71,15 +76,24 @@ Text txtResCode;
     
     @FXML
     private void btnSend(Event e) throws MalformedURLException, IOException {
-           pbLoading.setProgress(ProgressBar.INDETERMINATE_PROGRESS);
+        
+        if(!tfUrl.getText().isEmpty()){
+         pbLoading.setProgress(ProgressBar.INDETERMINATE_PROGRESS);
             callGetRequest();
+        }else{
+           Alert alert = new Alert(AlertType.INFORMATION, "Url Can't be blank!", ButtonType.CANCEL);
+        alert.showAndWait();
+        }
+          
            
            
     }
 
-    private void callGetRequest() throws MalformedURLException, IOException {
+    private void callGetRequest(){
          
-       String url = tfUrl.getText();
+        try {
+            
+            String url = tfUrl.getText();
             
             URL obj = new URL(url);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -90,22 +104,22 @@ Text txtResCode;
             //add request header
             con.setRequestProperty("User-Agent", USER_AGENT);
             
-            	con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
-                String urlParameters;
-                pbLoading.setProgress(0);
-                if(!tfPayload.isDisable()){
-                    urlParameters = tfPayload.getText();
-                }else{
-                    urlParameters = "";
-                }
-		
-
-		// Send post request
-		con.setDoOutput(true);
-        try (DataOutputStream wr = new DataOutputStream(con.getOutputStream())) {
-            wr.writeBytes(urlParameters);
-            wr.flush();
-        }
+            con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
+            String urlParameters;
+            pbLoading.setProgress(0);
+            if(!tfPayload.isDisable()){
+                urlParameters = tfPayload.getText();
+            }else{
+                urlParameters = "";
+            }
+            
+            
+            // Send post request
+            con.setDoOutput(true);
+            try (DataOutputStream wr = new DataOutputStream(con.getOutputStream())) {
+                wr.writeBytes(urlParameters);
+                wr.flush();
+            }
             int responseCode = con.getResponseCode();
             System.out.println("\nSending "+chMethods.getValue()+" request to URL : " + url);
             System.out.println("Response Code : " + responseCode);
@@ -120,8 +134,18 @@ Text txtResCode;
                 }
             }
             txtResCode.setText("Response Code : " + responseCode);
-         teResponse.setText(response.toString());
-         // 
+            teResponse.setStyle("-fx-text-fill: Black;");
+            teResponse.setText(response.toString());
+            // 
+        }   catch (MalformedURLException ex) {
+            Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+            teResponse.setText(ex.getMessage());
+            teResponse.setStyle("-fx-text-fill: Red;");
+        } catch (IOException ex) {
+            Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+            teResponse.setText(ex.getMessage());
+            teResponse.setStyle("-fx-text-fill: Red;");
+        }
     }
     
 }
